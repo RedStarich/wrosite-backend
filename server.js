@@ -57,10 +57,14 @@ app.post('/api/gemini', async (req, res) => {
         const chatSession = model.startChat({
             generationConfig,
             history: [
-                {
-                    role: "user",
-                    parts: [{ text: wroContext }]
-                }
+            {
+                role: "system",
+                parts: [{ text: "Goal: help user to find answers about WRO competition. Response format: clear argumented answer using the given info. Important: avoid giving unproven information, avoid going beyond the scope of WRO competition." }]
+            },
+            {
+                role: "user",
+                parts: [{ text: wroContext }]
+            }
             ],
         });
 
