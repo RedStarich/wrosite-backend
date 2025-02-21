@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Gemini API</title>
+</head>
+<body>
+    <h2>Test Gemini API</h2>
+    <input type="text" id="prompt" placeholder="Enter prompt">
+    <button onclick="sendRequest()">Send</button>
+    <h3>Response:</h3>
+    <pre id="response"></pre>
+
+    <script>
+        function sendRequest() {
+            const promptText = document.getElementById("prompt").value;
+            const responseElement = document.getElementById("response");
+
+            if (!promptText) {
+                responseElement.textContent = "Please enter a prompt.";
+                return;
+            }
+
+            fetch("http://localhost:3000/api/gemini", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseElement.textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                responseElement.textContent = "Error: " + error;
+            });
+        }
+    </script>
+</body>
+</html>
